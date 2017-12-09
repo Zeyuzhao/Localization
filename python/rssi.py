@@ -6,23 +6,23 @@ NUM_BEACON = 10
 # x and y are based on physical meters
 # i and j are based on the number of sampling points
 class RssiGrid:
-    def __init__(self, numBeacons, l, w, beaconPerM):
-        self.grid = [[RssiPoint (numBeacons, i, j) for i in range (0, l + beaconPerM, beaconPerM)] for j in range (0, w + beaconPerM, beaconPerM)]
+    def __init__(self, numBeacons, l, w, metersDiff):
+        self.grid = [[RssiPoint (numBeacons, i, j) for i in range(0, w + metersDiff, metersDiff)] for j in range (0, l + metersDiff, metersDiff)]
         # These numbers are based on the number of sampling points
         self.currentI = 0
         self.currentJ = 0
-        self.sizeI = l * beaconPerM
-        self.sizeJ = w * beaconPerM
+        self.sizeI = l / metersDiff
+        self.sizeJ = w / metersDiff
 
         self.complete = False
-        self.beaconPerM = beaconPerM
+        self.metersDiff = metersDiff
         self.__notSlide = True
 
     def addRssi(self, entry, val, x = 0, y = 0, useCustom = False):
         if (not useCustom):
             x = self.currentI
             y = self.currentJ
-
+        print(x,y)
         p = self.grid[x][y]
         p.addRssi(entry, val)
         if p.isFull():
@@ -51,7 +51,7 @@ class RssiGrid:
         return self.complete
 
     def getCurrentTileCoor(self):
-        return (self.currentI / self.beaconPerM, self.currentJ / self.beaconPerM)
+        return (self.currentI * self.metersDiff, self.currentJ * self.metersDiff)
 
 
 class RssiPoint:
@@ -119,13 +119,13 @@ def print2D(A):
     print(np.array(A))
 
 if __name__ == "__main__":
-    x_length = 3
-    y_length = 5
-    grid = RssiGrid(NUM_BEACON, x_length, y_length, 1)
-    for x in range(x_length + 1):
-        for y in range(y_length + 1):
+    x_length = 8
+    y_length = 4
+    density = 2
+    grid = RssiGrid(NUM_BEACON, x_length, y_length, density)
+    for x in range(0, x_length + density, density):
+        for y in range(0, y_length + density, density):
             addAll(grid)
-            print(grid.currentI, grid.currentJ)
             print2D(grid.grid)
 
 
