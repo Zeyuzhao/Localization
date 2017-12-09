@@ -20,9 +20,10 @@ for i in range(NUM_POINTS):
     for j in range(25):
         devices = scanner.scan(10.0)
         for dev in devices:
-            if dev.addr == "b8:27:eb:0b:ba:17":
+            beaconInfo = "Device %s (%s), RSSI=%d dB" % (dev.addr, dev.addrType, dev.rssi)
+            if beaconInfo.__contains__("b8:27:eb:0b:ba:17"):
                 rssiVals.append(dev.rssi)
-                print("RSSI = %ddB", (dev.rssi))
+                print("RSSI = %ddB" % (dev.rssi))
     sum = 0
     for k in rssiVals:
         sum += k
