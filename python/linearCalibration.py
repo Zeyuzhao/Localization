@@ -1,4 +1,4 @@
-from bluepy import Scanner, DefaultDelegate
+from bluepy.btle import Scanner, DefaultDelegate
 
 class ScanDelegate(DefaultDelegate):
     def __init__(self):
@@ -11,7 +11,6 @@ class ScanDelegate(DefaultDelegate):
             print("Received new data from", dev.addr)
 
 scanner = Scanner().withDelegate(ScanDelegate())
-devices = scanner.scan(10.0)
 
 calibMap = {}
 NUM_POINTS = 10
@@ -19,10 +18,11 @@ for i in range(NUM_POINTS):
     input("Move the pi " + str((i + 1)) + " meters away from the beacon, then hit Enter")
     rssiVals = []
     for j in range(25):
+        devices = scanner.scan(3.0)
         for dev in devices:
-            print("Device %s (%s), RSSI=%d dB" % (dev.addr, dev.addrType, dev.rssi))
-            for (adtype, desc, value) in dev.getScanData():
-                print("  %s = %s" % (desc, value))
+            if dev.addr == "b8:27:eb:f4:45:e8":
+                rssiVals.append(dev.rssi)
+                print("RSSI = %ddB" % (dev.rssi))
     sum = 0
     for k in rssiVals:
         sum += k
