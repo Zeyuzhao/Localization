@@ -20,7 +20,7 @@ for i in range(NUM_POINTS):
     for j in range(25):
         devices = scanner.scan(10.0)
         for dev in devices:
-            if dev.addr.equals("b8:27:eb:0b:ba:17"):
+            if dev.addr == "b8:27:eb:f4:45:e8":
                 rssiVals.append(dev.rssi)
                 print("RSSI = %ddB" % (dev.rssi))
     sum = 0
