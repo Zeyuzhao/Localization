@@ -1,4 +1,4 @@
-from bluepy.btle import Scanner, DefaultDelegate
+from bluepy import Scanner, DefaultDelegate
 
 class ScanDelegate(DefaultDelegate):
     def __init__(self):
@@ -21,8 +21,8 @@ for i in range(NUM_POINTS):
     for j in range(25):
         for dev in devices:
             print("Device %s (%s), RSSI=%d dB" % (dev.addr, dev.addrType, dev.rssi))
-            # for (adtype, desc, value) in dev.getScanData():
-            #     print("  %s = %s" % (desc, value))
+            for (adtype, desc, value) in dev.getScanData():
+                print("  %s = %s" % (desc, value))
     sum = 0
     for k in rssiVals:
         sum += k
