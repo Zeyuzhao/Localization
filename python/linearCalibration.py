@@ -62,7 +62,7 @@ def calib():
     average4 = sum / len(rssiVals4)
     sum = 0
     allAverage = (average1, average2, average3, average4)
-    calibMap.update({i + 1 : allAverage})
+    # calibMap.update({i + 1 : allAverage})
     return allAverage
 
 # Write to file to run regression in excel
