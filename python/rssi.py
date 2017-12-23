@@ -2,7 +2,7 @@
 import numpy as np
 import pickle
 
-from python.linearCalibration import calib
+#from python.linearCalibration import calib
 NUM_SAMPLES = 1
 NUM_BEACON = 4
 # x and y are based on physical meters
@@ -24,7 +24,6 @@ class RssiGrid:
         if (not useCustom):
             x = self.currentI
             y = self.currentJ
-        print(x,y)
         p = self.grid[x][y]
         p.addRssi(entry, val)
         if p.isFull():
@@ -44,7 +43,7 @@ class RssiGrid:
             else:
                 self.__notSlide = True
                 self.currentI += (1) if (j % 2 == 0) else (-1)
-        print("Current point is complete. Please move beacon to {}, {}".format(self.currentI, self.currentJ))
+        print("Current point is complete. Please move beacon to ({}, {})".format(self.currentI, self.currentJ))
 
     def isComplete(self):
         if self.sizeJ % 2 == 0:
@@ -122,6 +121,8 @@ def addAll(grid):
 def print2D(A):
     print(np.array(A))
 
+def calib():
+    return (1,2,3,4)
 
 if __name__ == "__main__":
     x_length = 3
@@ -132,6 +133,8 @@ if __name__ == "__main__":
         rssiTuple = calib()
         for i in range(NUM_BEACON):
             grid.addRssi(i, rssiTuple[i])
+            print("Beacon: {}, Value: {}, Coord: ({}, {})".format(i, rssiTuple[i], grid.currentI, grid.currentJ))
+        input("Press Enter to Continue...")
     print2D(grid)
     f = open('grid.pckl', 'wb')
     pickle.dump(grid, f)
