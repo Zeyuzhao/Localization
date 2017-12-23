@@ -2,7 +2,7 @@
 #import numpy as np
 import pickle
 
-from python.linearCalibration import calib
+from linearCalibration import calib
 NUM_SAMPLES = 1
 NUM_BEACON = 4
 # x and y are based on physical meters
