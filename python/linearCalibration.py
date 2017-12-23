@@ -13,14 +13,14 @@ class ScanDelegate(DefaultDelegate):
 scanner = Scanner().withDelegate(ScanDelegate())
 
 calibMap = {}
-NUM_POINTS = 10
+NUM_POINTS = 5
 for i in range(NUM_POINTS):
     input("Move the pi " + str((i + 1)) + " meters away from the beacon, then hit Enter")
     rssiVals = []
     for j in range(25):
         devices = scanner.scan(3.0)
         for dev in devices:
-            if dev.addr == "b8:27:eb:f4:45:e8":
+            if dev.addr == "b8:27:eb:c9:80:30":
                 rssiVals.append(dev.rssi)
                 print("RSSI = %ddB" % (dev.rssi))
     sum = 0
