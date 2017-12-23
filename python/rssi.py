@@ -124,15 +124,14 @@ def print2D(A):
 
 
 if __name__ == "__main__":
-    x_length = 4
-    y_length = 4
+    x_length = 3
+    y_length = 5
     density = 1
     grid = RssiGrid(NUM_BEACON, x_length, y_length, density)
     while(not grid.isComplete()):
         rssiTuple = calib()
         for i in range(NUM_BEACON):
             grid.addRssi(i, rssiTuple[i])
-
     print2D(grid)
     f = open('grid.pckl', 'wb')
     pickle.dump(grid, f)
