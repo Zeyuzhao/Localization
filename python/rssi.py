@@ -1,8 +1,10 @@
 #from bluepy.btle import Scanner, DefaultDelegate
-import numpy as np
+#import numpy as np
+import pickle
 
-NUM_SAMPLES = 10
-NUM_BEACON = 10
+from linearCalibration import calib
+NUM_SAMPLES = 1
+NUM_BEACON = 4
 # x and y are based on physical meters
 # i and j are based on the number of sampling points
 class RssiGrid:
@@ -22,7 +24,6 @@ class RssiGrid:
         if (not useCustom):
             x = self.currentI
             y = self.currentJ
-        print(x,y)
         p = self.grid[x][y]
         p.addRssi(entry, val)
         if p.isFull():
@@ -34,7 +35,7 @@ class RssiGrid:
         i = self.currentI
         j = self.currentJ
         if self.grid[i][j].isFull():
-            if (self.__isComplete ()):
+            if (self.isComplete ()):
                 self.complete = True
             elif (self.__notSlide and ((i >= self.sizeI) if (j % 2 == 0) else (i <= 0))):
                 self.currentJ += 1
@@ -42,8 +43,9 @@ class RssiGrid:
             else:
                 self.__notSlide = True
                 self.currentI += (1) if (j % 2 == 0) else (-1)
+        print("Current point is complete. Please move beacon to ({}, {})".format(self.currentI, self.currentJ))
 
-    def __isComplete(self):
+    def isComplete(self):
         if self.sizeJ % 2 == 0:
             self.complete = self.currentJ >= self.sizeJ and self.currentI >= self.sizeI
         else:
@@ -110,23 +112,35 @@ class RssiEntry:
             self.computeAvg()
             return True
         return False
+
 def addAll(grid):
     for x in range(NUM_SAMPLES):
         for y in range(NUM_BEACON):
             grid.addRssi(y, x)
-
+"""
 def print2D(A):
     print(np.array(A))
+"""
 
 if __name__ == "__main__":
-    x_length = 8
-    y_length = 4
-    density = 2
+    x_length = 3
+    y_length = 5
+    density = 1
     grid = RssiGrid(NUM_BEACON, x_length, y_length, density)
-    for x in range(0, x_length + density, density):
-        for y in range(0, y_length + density, density):
-            addAll(grid)
-            print2D(grid.grid)
+    while(not grid.isComplete()):
+        rssiTuple = calib()
+        for i in range(NUM_BEACON):
+            grid.addRssi(i, rssiTuple[i])
+            print("Beacon: {}, Value: {}, Coord: ({}, {})".format(i, rssiTuple[i], grid.currentI, grid.currentJ))
+        input("Press Enter to Continue...")
+    #print2D(grid)
+    f = open('grid.pckl', 'wb')
+    pickle.dump(grid, f)
+    f.close()
+
+
+
+
 
 
 
