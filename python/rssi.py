@@ -1,8 +1,8 @@
 #from bluepy.btle import Scanner, DefaultDelegate
-import numpy as np
+#import numpy as np
 import pickle
 
-#from python.linearCalibration import calib
+from python.linearCalibration import calib
 NUM_SAMPLES = 1
 NUM_BEACON = 4
 # x and y are based on physical meters
@@ -117,12 +117,10 @@ def addAll(grid):
     for x in range(NUM_SAMPLES):
         for y in range(NUM_BEACON):
             grid.addRssi(y, x)
-
+"""
 def print2D(A):
     print(np.array(A))
-
-def calib():
-    return (1,2,3,4)
+"""
 
 if __name__ == "__main__":
     x_length = 3
@@ -135,7 +133,7 @@ if __name__ == "__main__":
             grid.addRssi(i, rssiTuple[i])
             print("Beacon: {}, Value: {}, Coord: ({}, {})".format(i, rssiTuple[i], grid.currentI, grid.currentJ))
         input("Press Enter to Continue...")
-    print2D(grid)
+    #print2D(grid)
     f = open('grid.pckl', 'wb')
     pickle.dump(grid, f)
     f.close()
