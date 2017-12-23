@@ -2,6 +2,7 @@
 import numpy as np
 import pickle
 
+from python.linearCalibration import calib
 NUM_SAMPLES = 1
 NUM_BEACON = 4
 # x and y are based on physical meters
@@ -121,8 +122,6 @@ def addAll(grid):
 def print2D(A):
     print(np.array(A))
 
-def calib():
-    return (1,2,3,4)
 
 if __name__ == "__main__":
     x_length = 4
@@ -133,6 +132,7 @@ if __name__ == "__main__":
         rssiTuple = calib()
         for i in range(NUM_BEACON):
             grid.addRssi(i, rssiTuple[i])
+
     print2D(grid)
     f = open('grid.pckl', 'wb')
     pickle.dump(grid, f)
