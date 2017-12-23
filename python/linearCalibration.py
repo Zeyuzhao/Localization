@@ -13,7 +13,7 @@ class ScanDelegate(DefaultDelegate):
 scanner = Scanner().withDelegate(ScanDelegate())
 
 calibMap = {}
-NUM_POINTS = 10
+NUM_POINTS = 5
 for i in range(NUM_POINTS):
     input("Move the pi " + str((i + 1)) + " meters away from the beacon, then hit Enter")
     rssiVals = []
