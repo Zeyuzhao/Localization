@@ -27,10 +27,10 @@ def calib():
             if dev.addr == "b8:27:eb:f4:45:e8":
                 rssiVals1.append(dev.rssi)
                 print("RSSI = %ddB" % (dev.rssi))
-            elif dev.addr == "b8:27:eb:45:95:14":
+            elif dev.addr == "b8:27:eb:ba:6a:eb":
                 rssiVals2.append(dev.rssi)
                 print("RSSI = %ddB" % (dev.rssi))
-            elif dev.addr == "b8:27:eb:d7:4e:01":
+            elif dev.addr == "b8:27:eb:28:b1:fe":
                 rssiVals3.append(dev.rssi)
                 print("RSSI = %ddB" % (dev.rssi))
             elif dev.addr == "b8:27:eb:c9:80:30":
