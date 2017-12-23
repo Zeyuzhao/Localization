@@ -1,7 +1,9 @@
-from math import pow
+from math import *
 
-def rssiToMeters(rssi, txPower):
+def rssiToMeters(rssi):
     if (rssi == 0):
         return -1
     else:
-        return pow(10, (txPower - rssi) / 20)       # This formula will change based on the output of the calibration
+        return (1.04224 * pow(10, -13)) * pow((rssi * -1), 7.73395)
+
+print(rssiToMeters(-48.68))
