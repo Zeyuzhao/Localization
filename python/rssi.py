@@ -123,8 +123,8 @@ def print2D(A):
 """
 
 if __name__ == "__main__":
-    x_length = 3
-    y_length = 5
+    x_length = 4
+    y_length = 3
     density = 1
     grid = RssiGrid(NUM_BEACON, x_length, y_length, density)
     while(not grid.isComplete()):
