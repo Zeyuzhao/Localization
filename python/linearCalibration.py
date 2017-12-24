@@ -6,15 +6,21 @@ class ScanDelegate(DefaultDelegate):
 
     def handleDiscovery(self, dev, isNewDev, isNewData):
         if isNewDev:
-            print("Discovered device", dev.addr)
+            # print("Discovered device", dev.addr)
+            ...
         elif isNewData:
-            print("Received new data from", dev.addr)
+            # print("Received new data from", dev.addr)
+            ...
 
 scanner = Scanner().withDelegate(ScanDelegate())
 
 VAL_NUM = 25
 calibMap = {}
 NUM_POINTS = 5
+points = [(0,0), (1,0), (2,0), (3,0), (4,0), (4,1), (3,1), (2,1), (1,1), (0,1), (0,2), (1,2), (2,2), (3,2), (4,2), (4,3),
+          (3,3), (2,3), (1,3), (0,3)]
+
+pointsIt = iter(points)
 
 def calib():
     rssiVals1 = []
@@ -27,10 +33,10 @@ def calib():
             if dev.addr == "b8:27:eb:f4:45:e8":
                 rssiVals1.append(dev.rssi)
                 print("RSSI = %ddB" % (dev.rssi))
-            elif dev.addr == "b8:27:eb:45:95:14":
+            elif dev.addr == "b8:27:eb:ba:6a:eb":
                 rssiVals2.append(dev.rssi)
                 print("RSSI = %ddB" % (dev.rssi))
-            elif dev.addr == "b8:27:eb:d7:4e:01":
+            elif dev.addr == "b8:27:eb:28:b1:fe":
                 rssiVals3.append(dev.rssi)
                 print("RSSI = %ddB" % (dev.rssi))
             elif dev.addr == "b8:27:eb:c9:80:30":
@@ -60,9 +66,8 @@ def calib():
     for k in rssiVals4:
         sum += k
     average4 = sum / len(rssiVals4)
-    sum = 0
     allAverage = (average1, average2, average3, average4)
-    # calibMap.update({i + 1 : allAverage})
+    calibMap.update({pointsIt.__next__() : allAverage})
     return allAverage
 
 # Write to file to run regression in excel
