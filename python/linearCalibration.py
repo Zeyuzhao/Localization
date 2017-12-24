@@ -70,6 +70,7 @@ def calib():
     average4 = sum / len(rssiVals4)
     allAverage = (average1, average2, average3, average4)
     f.write(str(allAverage) + ",")
+    f.close()
     return allAverage
 
 # Write to file to run regression in excel
