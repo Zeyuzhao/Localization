@@ -22,9 +22,8 @@ points = [(0,0), (1,0), (2,0), (3,0), (4,0), (4,1), (3,1), (2,1), (1,1), (0,1), 
 
 pointsIt = iter(points)
 
-f = open("calibFile.csv", "w+")
-
 def calib():
+    f = open("calibFile.csv", "a+")
     rssiVals1 = []
     rssiVals2 = []
     rssiVals3 = []
