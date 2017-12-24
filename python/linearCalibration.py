@@ -15,6 +15,10 @@ scanner = Scanner().withDelegate(ScanDelegate())
 VAL_NUM = 25
 calibMap = {}
 NUM_POINTS = 5
+points = [(0,0), (1,0), (2,0), (3,0), (4,0), (4,1), (3,1), (2,1), (1,1), (0,1), (0,2), (1,2), (2,2), (3,2), (4,2), (4,3),
+          (3,3), (2,3), (1,3), (0,3)]
+
+pointsIt = iter(points)
 
 def calib():
     rssiVals1 = []
@@ -60,9 +64,8 @@ def calib():
     for k in rssiVals4:
         sum += k
     average4 = sum / len(rssiVals4)
-    sum = 0
     allAverage = (average1, average2, average3, average4)
-    # calibMap.update({i + 1 : allAverage})
+    calibMap.update({pointsIt.__next__() : allAverage})
     return allAverage
 
 # Write to file to run regression in excel
