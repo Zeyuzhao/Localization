@@ -22,6 +22,8 @@ points = [(0,0), (1,0), (2,0), (3,0), (4,0), (4,1), (3,1), (2,1), (1,1), (0,1), 
 
 pointsIt = iter(points)
 
+f = open("calibFile.csv", "w+")
+
 def calib():
     rssiVals1 = []
     rssiVals2 = []
@@ -67,16 +69,15 @@ def calib():
         sum += k
     average4 = sum / len(rssiVals4)
     allAverage = (average1, average2, average3, average4)
-    calibMap.update({pointsIt.__next__() : allAverage})
+    f.write(str(allAverage) + ",")
     return allAverage
 
 # Write to file to run regression in excel
-f = open("calibFile.csv", "w+")
-for key in calibMap.keys():
-    f.write(str(key) + ",")
-f.write("\n")
-for val in calibMap.values():
-    f.write(str(val) + ",")
-f.close()
-
-print("File created")
+# for key in calibMap.keys():
+#     f.write(str(key) + ",")
+# f.write("\n")
+# for val in calibMap.values():
+#     f.write(str(val) + ",")
+# f.close()
+#
+# print("File created")
