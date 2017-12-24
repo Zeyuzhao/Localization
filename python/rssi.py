@@ -1,8 +1,10 @@
 #from bluepy.btle import Scanner, DefaultDelegate
 #import numpy as np
 import pickle
+import os
 
 from linearCalibration import calib
+
 NUM_SAMPLES = 1
 NUM_BEACON = 4
 # x and y are based on physical meters
@@ -37,19 +39,23 @@ class RssiGrid:
         if self.grid[i][j].isFull():
             if (self.isComplete ()):
                 self.complete = True
+                return None
             elif (self.__notSlide and ((i >= self.sizeI) if (j % 2 == 0) else (i <= 0))):
                 self.currentJ += 1
                 self.__notSlide = False
             else:
                 self.__notSlide = True
                 self.currentI += (1) if (j % 2 == 0) else (-1)
-        print("Current point is complete. Please move beacon to ({}, {})".format(self.currentI, self.currentJ))
+            print("Current point is complete. Please move beacon to ({}, {})".format(self.currentI, self.currentJ))
 
     def isComplete(self):
-        if self.sizeJ % 2 == 0:
-            self.complete = self.currentJ >= self.sizeJ and self.currentI >= self.sizeI
-        else:
-            self.complete = self.currentJ >= self.sizeJ and self.currentI <= 0
+        i = self.currentI
+        j = self.currentJ
+        if self.grid[i][j].isFull():
+            if self.sizeJ % 2 == 0:
+                self.complete = self.currentJ >= self.sizeJ and self.currentI >= self.sizeI
+            else:
+                self.complete = self.currentJ >= self.sizeJ and self.currentI <= 0
         return self.complete
 
     def getCurrentTileCoor(self):
@@ -122,21 +128,29 @@ def print2D(A):
     print(np.array(A))
 """
 
+
+'''
+def calib(x , y):
+    return (0, 1, 2, 3)
+'''
+
 if __name__ == "__main__":
     x_length = 4
     y_length = 3
-    density = 1
-    grid = RssiGrid(NUM_BEACON, x_length, y_length, density)
+    spacing = 1
+    grid = RssiGrid(NUM_BEACON, x_length, y_length, spacing)
+
     while(not grid.isComplete()):
         rssiTuple = calib()
         for i in range(NUM_BEACON):
-            grid.addRssi(i, rssiTuple[i])
             print("Beacon: {}, Value: {}, Coord: ({}, {})".format(i, rssiTuple[i], grid.currentI, grid.currentJ))
+            grid.addRssi(i, rssiTuple[i])
         input("Press Enter to Continue...")
+        f = open('grid.pckl', 'wb')
+        pickle.dump(grid, f)
+        f.close()
     #print2D(grid)
-    f = open('grid.pckl', 'wb')
-    pickle.dump(grid, f)
-    f.close()
+
 
 
 
