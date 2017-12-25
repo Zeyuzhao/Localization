@@ -13,7 +13,7 @@ dataGrid = pickle.load(f)
 dimX = 3
 dimY = 4
 numBeacons = 4
-gridBeacons = [0 for x in range(numBeacons)]
+gridBeacons = []
 fig = plt.figure()
 
 for beaconNum in range(numBeacons):
@@ -24,7 +24,7 @@ for beaconNum in range(numBeacons):
             currentEntry = b.entries[beaconNum].average
             currentGrid[j][i] = currentEntry
 
-    gridBeacons[beaconNum] = currentGrid
+    gridBeacons.append(currentGrid)
     # Make data.
     X = np.linspace(0, dimX, dimX + 1, True)
     Y = np.linspace(0, dimY, dimY + 1, True)

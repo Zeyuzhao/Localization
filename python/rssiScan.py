@@ -1,7 +1,7 @@
 from python.rssi import *
 from linearCalibration import calib
-x_length = 4
-y_length = 3
+x_length = 3
+y_length = 4
 spacing = 1
 grid = RssiGrid(NUM_BEACON, x_length, y_length, spacing)
 
