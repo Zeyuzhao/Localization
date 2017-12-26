@@ -134,6 +134,8 @@ def calib(x , y):
     return (0, 1, 2, 3)
 '''
 
+
+
 if __name__ == "__main__":
     with open('grid.pckl', 'rb') as f:
         grid = pickle.load(f)
