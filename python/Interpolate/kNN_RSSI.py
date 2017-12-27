@@ -1,17 +1,22 @@
 import numpy as np
 from sklearn import neighbors
 from python.rssi import *
-
-#load data for beacons
-f = open("grid.pckl", "rb")
-dataGrid = pickle.load(f)
+import csv
+import pandas as pd
 
 #Constants
 dimX = 3
 dimY = 4
 numBeacons = 4
 
+testFile = "testPoints.csv"
+pickleGrid = "grid.pckl"
 
+###################################################################
+# Process Data for Regression Model
+
+f = open(pickleGrid, "rb")
+dataGrid = pickle.load(f)
 gridBeacons = []
 
 for beaconNum in range(numBeacons):
@@ -41,15 +46,26 @@ for i in range(dimX + 1):
 X = np.array(X)
 y = np.array(y)
 
+## save to xlsx file
+df = pd.DataFrame (X)
+filepath = 'Xvar.xlsx'
+df.to_excel(filepath, index=False)
+# #############################################################################
+# Process Data for Testing Points
 
 X_test = []
 y_test = []
 
-
-
-# Add noise to targets
-#y[::5] += 1 * (0.5 - np.random.rand(8))
-
+with open(testFile, "r") as g:
+    reader = csv.reader(g)
+    for i, row in enumerate(reader):
+        if (i == 0):
+            print(row)
+        else:
+            y_test.append([float(i) for i in row[0:2]])
+            X_test.append([float(i) for i in row[2:]])
+X_test = np.array(X_test)
+y_test = np.array(y_test)
 # #############################################################################
 # Fit regression model
 
@@ -59,4 +75,12 @@ for i, weights in enumerate(['distance']):
     knn = neighbors.KNeighborsRegressor(n_neighbors, weights=weights)
     model = knn.fit(X, y)
 
+    y_ = model.predict(X_test)
+
+    accuracy = []
+    for entry in range(len(y_test)):
+        dist = np.linalg.norm(y_[entry] - y_test[entry])
+        accuracy.append(dist)
+    print(accuracy)
+    print(np.mean(accuracy))
     #Test Accuracy of Model
